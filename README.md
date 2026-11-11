@@ -676,20 +676,10 @@ Deux composants répartissent les appels vers `CALCUL-SERVICE` : Spring Cloud Lo
 
 ---
 
-## 16. Limites et points ouverts
-
-| Point | Constat | Ce qui n'est pas affirmé |
-|---|---|---|
-| Répartition de charge | Les deux instances reçoivent du trafic ; pas d'alternance visible. | Le fonctionnement du *round robin* n'est pas prouvé (section 14). |
-| En-tête `Location` | Pour des appels **directs** (port 8082), `Location` désigne `http://localhost:8082/operations/<id>` (figure 15), ce qui est cohérent. Pour certains POST relevés **via la passerelle**, l'adresse affichée est sur le port 8082. | Aucune capture ne prouve que `Location` soit reconstruit avec l'adresse de la passerelle (8888) grâce aux en-têtes `X-Forwarded-*`. Ce point reste ouvert. |
-| `GET /operations` | Documenté (figure 28), non exécuté en appel direct. | Le contenu de la liste n'est pas prouvé en appel direct. |
-| Persistance | `historique-service` conserve ses opérations **en mémoire** ; l'identifiant renvoyé dépend du nombre d'opérations déjà créées depuis le démarrage. | — |
-| Codes Swagger | Les codes 201 et 400 apparaissent « Undocumented ». | — |
-| Configuration | Les extraits de configuration reproduisent la configuration de référence de l'énoncé. | — |
 
 ---
 
-## 17. Réponses aux questions du TP
+## 16. Réponses aux questions du TP
 
 **Partie A.**
 1. L'**annuaire Eureka** associe un nom de service à la liste des adresses de ses instances ; la correspondance est mise à jour à chaque inscription, désinscription, battement de cœur ou éviction. Les clients en gardent une copie locale rafraîchie périodiquement.
