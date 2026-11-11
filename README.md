@@ -711,7 +711,7 @@ Deux composants répartissent les appels vers `CALCUL-SERVICE` : Spring Cloud Lo
 
 ---
 
-## 18. Conclusion et perspectives
+## 17. Conclusion et perspectives
 
 Ce travail transforme les deux microservices du TP3 en une architecture Spring Cloud cohérente : un annuaire Eureka où s'inscrivent `calcul-service` (deux instances), `historique-service` et la passerelle ; un client OpenFeign qui appelle `CALCUL-SERVICE` par son nom ; une passerelle qui offre un point d'entrée unique en routes statiques puis dynamiques ; une documentation Swagger/OpenAPI par service et par la passerelle ; des classes de données allégées par Lombok. Les captures valident l'inscription et le cycle de vie des instances, la chaîne d'appel `historique-service → calcul-service`, le traitement des erreurs (400, 404) et le routage dynamique par l'annuaire. La répartition de charge entre instances reste **à démontrer** par un relevé de traces dédié (section 14).
 
