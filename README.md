@@ -727,13 +727,3 @@ Ce travail transforme les deux microservices du TP3 en une architecture Spring C
 
 **Perspectives** : (1) externaliser l'historique dans une base de données pour rendre `historique-service` sans état ; (2) tolérance aux pannes avec un disjoncteur (Resilience4j) ; (3) documenter les codes 201 et 400 par annotations OpenAPI ; (4) restreindre les routes dynamiques et sécuriser Actuator ; (5) tests automatisés (MockMvc, tests de contrat Feign) ; (6) conteneurisation (Docker Compose) ; (7) traçage distribué (Micrometer Tracing) pour observer la répartition de charge.
 
----
-
-## Annexe : vue d'ensemble du corpus de captures
-
-Le dossier de captures de ce travail regroupe 46 fichiers : environnement, annuaire, tests directs D.4, tests via la passerelle (E.2, E.5), Swagger, Actuator et consoles. Seules les captures les plus pertinentes sont intégrées ci-dessus, chacune une seule fois ; les séries redondantes ou obsolètes n'ont pas été reprises.
-
-<p align="center">
-  <img src="screenshots/00_vue_globale_captures.png" alt="Vue globale du dossier de captures" width="90%"><br>
-  <em>Figure 36 — Vue d'ensemble du dossier de captures (46 éléments). Cette figure est une illustration générale de l'inventaire ; elle ne constitue la preuve d'aucune fonctionnalité.</em>
-</p>
