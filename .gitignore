@@ -1,0 +1,12 @@
+# Maven
+target/
+# IntelliJ
+.idea/
+*.iml
+*.iws
+out/
+# Systeme
+.DS_Store
+Thumbs.db
+# Secrets (aucun dans ce TP, par precaution)
+.env
