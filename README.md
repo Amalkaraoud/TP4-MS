@@ -642,44 +642,9 @@ Deux composants répartissent les appels vers `CALCUL-SERVICE` : Spring Cloud Lo
 - **Hypothèses non vérifiées** (pistes d'explication) : chaque appelant (Feign, passerelle) possède son propre compteur ; la nouvelle instance peut ne pas figurer dans la copie locale avant 5 à 10 s ; les consoles agrègent plusieurs séries de tests.
 - **Protocole de vérification recommandé** : lancer les deux instances, patienter ≥ 10 s, vider les deux consoles, envoyer six fois `GET /calcul/somme?a=2&b=3` depuis la passerelle, puis relever instance par instance.
 
----
-
-## 15. Synthèse des validations
-
-| Réf. | Test | Passage par | Résultat observé | Figure |
-|---|---|---|---|---|
-| Env. | Versions, ports libres | Terminal | Java 17.0.20.1, Git 2.56.0, ports libres | 1 |
-| B.5 | Annuaire seul | Navigateur | « No instances available », auto-préservation désactivée | 4 |
-| C.4 | Inscription d'une instance | Eureka | `CALCUL-SERVICE` UP (1) | 5 |
-| C.4 | `somme` 2+3 | direct 8081 | 5 | 9 |
-| C.5 | Deuxième instance | Eureka | `CALCUL-SERVICE` UP (2) | 6 |
-| C.5 | `produit` 6×7 | direct 8083 | 42 | 10 |
-| C.6 | Arrêt de 8083 | Eureka | instance 8083 DOWN | 7 |
-| D.4-1 | POST `somme` 8, 2 | direct 8082 | 201 | 13 |
-| D.4-2 | POST `produit` 6, 7 | direct 8082 | 201, `resultat` 42 | 14 |
-| D.4-3 | POST `division` 7, 2 | direct 8082 | 201, `resultat` 3.5 | 15 |
-| D.4-4 | POST `division` 7, 0 | direct 8082 | 400, `Erreur : division par 0 impossible` | 16 |
-| D.4-5 | POST `racine` | direct 8082 | 400, `Operateur inconnu : racine` | 17 |
-| D.4-6 | GET `/operations` | direct 8082 | **non exécuté** sur la capture (documentation seule) | 28 |
-| D.4-7 | GET `/operations/2` | direct 8082 | 200, produit 6×7 = 42 | 18 |
-| E.2-1 | GET `/calcul/somme` | passerelle | 200, 5 | 20 |
-| E.2-2 | GET `/calcul/division` b=0 | passerelle | 400 | 21 |
-| E.2-5 | GET `/calcul/somme/detail` | passerelle | 200, JSON | 22 |
-| E.2-6 | GET `/bonjour` | navigateur | 404, page HTML | 23 |
-| E.5-1 | GET `/calcul-service/calcul/somme` | passerelle | 5 | 24 |
-| E.5-2 | GET `/calcul-service/calcul/produit` | passerelle | 42 | 25 |
-| E.5-4 | POST `/historique-service/operations` | passerelle | 201 | 26 |
-| E.5-5 | GET `/calcul/somme` sans préfixe | navigateur | 404 | 27 |
-| E.5-6 | `/actuator/gateway/routes` | passerelle | routes `ReactiveCompositeDiscoveryClient_…` | 31 |
-| Swagger | Définitions statique / dynamique | Swagger UI | deux définitions ; serveur `…:8888/historique-service` (dynamique) | 29, 30 |
-| LB | Alternance 8081/8083 | consoles | **non démontrée** | 32–35 |
-
----
 
 
----
-
-## 16. Réponses aux questions du TP
+## 15. Réponses aux questions du TP
 
 **Partie A.**
 1. L'**annuaire Eureka** associe un nom de service à la liste des adresses de ses instances ; la correspondance est mise à jour à chaque inscription, désinscription, battement de cœur ou éviction. Les clients en gardent une copie locale rafraîchie périodiquement.
@@ -711,7 +676,7 @@ Deux composants répartissent les appels vers `CALCUL-SERVICE` : Spring Cloud Lo
 
 ---
 
-## 17. Conclusion et perspectives
+## 16. Conclusion et perspectives
 
 Ce travail transforme les deux microservices du TP3 en une architecture Spring Cloud cohérente : un annuaire Eureka où s'inscrivent `calcul-service` (deux instances), `historique-service` et la passerelle ; un client OpenFeign qui appelle `CALCUL-SERVICE` par son nom ; une passerelle qui offre un point d'entrée unique en routes statiques puis dynamiques ; une documentation Swagger/OpenAPI par service et par la passerelle ; des classes de données allégées par Lombok. Les captures valident l'inscription et le cycle de vie des instances, la chaîne d'appel `historique-service → calcul-service`, le traitement des erreurs (400, 404) et le routage dynamique par l'annuaire. La répartition de charge entre instances reste **à démontrer** par un relevé de traces dédié (section 14).
 
