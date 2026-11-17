@@ -1,0 +1,45 @@
+server:
+  port: 8888
+
+spring:
+  application:
+    name: gateway-service
+  cloud:
+    gateway:
+      server:
+        webflux:
+          discovery:
+            locator:
+              # Une route par service présent dans l'annuaire de manière dynamique[cite: 27]
+              enabled: true
+              # Noms Eureka en majuscules; acceptés en minuscules dans l'URI[cite: 27]
+              lower-case-service-id: true
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+    registry-fetch-interval-seconds: 5
+  instance:
+    instance-id: ${spring.application.name}:${server.port}
+    prefer-ip-address: true
+    lease-renewal-interval-in-seconds: 5
+    lease-expiration-duration-in-seconds: 10
+
+management:
+  endpoint:
+    gateway:
+      access: read-only
+  endpoints:
+    web:
+      exposure:
+        include: gateway
+
+# Swagger UI de la passerelle en configuration dynamique[cite: 27]
+springdoc:
+  swagger-ui:
+    urls:
+      - name: calcul-service
+        url: /calcul-service/v3/api-docs
+      - name: historique-service
+        url: /historique-service/v3/api-docs
